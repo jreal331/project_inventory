@@ -1,9 +1,10 @@
 // --- DATA DUMMY (Initial Data) ---
 const initialBarang = [
-    { kode: "BRG-001", nama: "Laptop ASUS", jenis: "Elektronik", satuan: "Unit", stok: 15 },
-    { kode: "BRG-002", nama: "Mouse Wireless", jenis: "Aksesoris", satuan: "Pcs", stok: 50 },
-    { kode: "BRG-003", nama: "Kertas A4", jenis: "ATK", satuan: "Rim", stok: 100 }
+    { kode: "BRG-001", nama: "Laptop ASUS", jenis: "Elektronik", satuan: "Unit", keadaan: "Baik", stok: 15 },
+    { kode: "BRG-002", nama: "Mouse Wireless", jenis: "Aksesoris", satuan: "Pcs", keadaan: "Baik", stok: 50 },
+    { kode: "BRG-003", nama: "Kertas A4", jenis: "ATK", satuan: "Rim", keadaan: "Baik", stok: 100 }
 ];
+
 
 // Fungsi Inisialisasi Data ke LocalStorage jika belum ada
 function initData() {
@@ -18,7 +19,7 @@ function handleLogin() {
     let pass = document.getElementById('password').value;
 
     if (user === 'admin' && pass === 'admin') {
-        alert("Login Berhasil!");
+        alert("WELCOME ADMIN TO INVENTORY SEKOLAH 🔥🔥🔥!!!");
         window.location.href = "index.html";
     } else {
         alert("Username atau Password Salah! (Gunakan: admin / admin)");
@@ -42,9 +43,9 @@ function loadBarang() {
     initData();
     let data = JSON.parse(localStorage.getItem('dataBarang')) || [];
     let tbody = document.getElementById('table-body');
-    
+
     if (tbody) {
-        tbody.innerHTML = ''; // Reset isi tabel
+        tbody.innerHTML = '';
         data.forEach((item, index) => {
             let row = `<tr>
                 <td>${index + 1}</td>
@@ -52,6 +53,7 @@ function loadBarang() {
                 <td>${item.nama}</td>
                 <td>${item.jenis}</td>
                 <td>${item.satuan}</td>
+                <td>${item.keadaan || "Baik"}</td>
                 <td>${item.stok}</td>
                 <td>
                     <a class="btn-action btn-delete" onclick="hapusBarang(${index})">Hapus</a>
@@ -61,6 +63,7 @@ function loadBarang() {
         });
     }
 }
+
 
 function hapusBarang(index) {
     if(confirm("Yakin ingin menghapus data ini?")) {
@@ -77,21 +80,23 @@ function tambahBarang() {
     let nama = document.getElementById('nama').value;
     let jenis = document.getElementById('jenis').value;
     let satuan = document.getElementById('satuan').value;
+    let keadaan = document.getElementById('keadaan').value;
     let stok = document.getElementById('stok').value;
 
-    if(nama === "" || stok === "") {
+    if (nama === "" || stok === "") {
         alert("Nama Barang dan Stok wajib diisi!");
         return;
     }
 
     let data = JSON.parse(localStorage.getItem('dataBarang')) || [];
-    
+
     data.push({
-        kode: kode,
-        nama: nama,
-        jenis: jenis,
-        satuan: satuan,
-        stok: stok
+        kode,
+        nama,
+        jenis,
+        satuan,
+        keadaan,
+        stok
     });
 
     localStorage.setItem('dataBarang', JSON.stringify(data));
